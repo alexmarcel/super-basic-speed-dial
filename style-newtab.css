@@ -1,0 +1,54 @@
+.tile-icon {
+    align-items: center;
+    background-color: #454545;
+    border-radius: 50%;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    margin-top: 16px;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.tile-icon-rounded {
+    border-radius: 50%;
+}
+
+.shortcut-tile {
+    position: relative;
+}
+
+.shortcut-tile a:hover .tile-icon {
+    transform: scale(1.12);
+    background-color: #606060;
+}
+
+.tile-label {
+    transition: color 0.15s ease;
+}
+
+.shortcut-tile a:hover .tile-label {
+    color: #fff !important;
+}
+
+.delete-btn {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 4px;
+    background: #c0392b;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.shortcut-tile:hover .delete-btn {
+    display: block;
+}

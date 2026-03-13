@@ -1,0 +1,30 @@
+{
+    "name" : "Super Basic Speed Dial",
+    "description" : "Super basic speed dial for your browsing needs",
+    "version" : "1.0",
+    "manifest_version" : 3,
+    "background" : {
+        "service_worker" : "background.js"
+    },
+    "action" : {
+        "default_popup" : "popup.html",
+        "default_icon" : {
+            "16" : "./images/icons8-home-office-16.png",
+            "24" : "./images/icons8-home-office-24.png",
+            "32" : "./images/icons8-home-office-32.png",
+            "48" : "./images/icons8-home-office-48.png",
+            "80" : "./images/icons8-home-office-80.png"
+        }
+    },
+    "icons" : {
+        "16" : "./images/icons8-home-office-16.png",
+        "24" : "./images/icons8-home-office-24.png",
+        "32" : "./images/icons8-home-office-32.png",
+        "48" : "./images/icons8-home-office-48.png",
+        "80" : "./images/icons8-home-office-80.png"
+    },
+    "permissions" : ["storage", "activeTab", "scripting"],
+    "chrome_url_overrides" : {
+        "newtab" : "newtab.html"
+    }
+}
