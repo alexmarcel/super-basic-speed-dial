@@ -58,7 +58,7 @@ function constructShortcuts(data) {
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
-        deleteBtn.textContent = '✕';
+        deleteBtn.textContent = 'X';
         deleteBtn.title = 'Remove shortcut';
         deleteBtn.addEventListener('click', (e) => {
             e.preventDefault();
