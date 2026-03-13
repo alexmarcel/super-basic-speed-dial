@@ -17,26 +17,28 @@
         <!-- Modal -->
         <div class="modal fade" id="modalAddShortcut" tabindex="-1" aria-labelledby="modalAddShortcutLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-dark">
-                <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content modal-dark">
+                    <div class="modal-header modal-dark-header">
+                        <h6 class="modal-title text-white" id="modalAddShortcutLabel">Add Shortcut</h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body modal-dark-body">
+                        <form autocomplete="off">
+                            <div class="mb-3">
+                                <label for="modalSiteName" class="form-label modal-label">Site Name</label>
+                                <input type="text" class="form-control modal-input" id="modalSiteName" placeholder="e.g. GitHub">
+                            </div>
+                            <div class="mb-1">
+                                <label for="modalURL" class="form-label modal-label">URL</label>
+                                <input type="text" class="form-control modal-input" id="modalURL" placeholder="https://...">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer modal-dark-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="btnAddShortcut">Add Shortcut</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                          <label for="modalSiteName" class="form-label">Site Name</label>
-                          <input type="text" class="form-control" id="modalSiteName">
-                        </div>
-                        <div class="mb-3">
-                          <label for="modalURL" class="form-label">URL</label>
-                          <input type="text" class="form-control" id="modalURL">
-                        </div>
-                      </form>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnAddShortcut">Add Shortcut</button>
-                </div>
-            </div>
             </div>
         </div>
 
