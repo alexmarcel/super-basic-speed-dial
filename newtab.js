@@ -1,3 +1,6 @@
+let draggedIndex = null;
+let editingIndex = null;
+
 constructDate();
 loadShortcuts();
 
@@ -63,7 +66,16 @@ function constructShortcuts(data) {
         deleteBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            removeShortcut(index);
+            if (deleteBtn.classList.contains('confirm')) {
+                removeShortcut(index);
+            } else {
+                deleteBtn.classList.add('confirm');
+                deleteBtn.textContent = '?';
+                setTimeout(() => {
+                    deleteBtn.classList.remove('confirm');
+                    deleteBtn.textContent = 'X';
+                }, 2000);
+            }
         });
 
         const label = document.createElement('div');
@@ -74,8 +86,59 @@ function constructShortcuts(data) {
         iconWrap.appendChild(tile);
         a.appendChild(iconWrap);
         a.appendChild(label);
+        const editBtn = document.createElement('button');
+        editBtn.className = 'edit-btn';
+        editBtn.textContent = 'E';
+        editBtn.title = 'Edit shortcut';
+        editBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            editingIndex = index;
+            document.getElementById('modalAddShortcutLabel').textContent = 'Edit Shortcut';
+            document.getElementById('btnAddShortcut').textContent = 'Save';
+            document.getElementById('modalSiteName').value = obj.name;
+            document.getElementById('modalURL').value = obj.url;
+            new bootstrap.Modal(document.getElementById('modalAddShortcut')).show();
+        });
+
         col.appendChild(a);
         col.appendChild(deleteBtn);
+        col.appendChild(editBtn);
+
+        // Drag and drop
+        col.draggable = true;
+        col.addEventListener('dragstart', (e) => {
+            // Prevent drag from blocking link clicks on the <a> element
+            e.dataTransfer.effectAllowed = 'move';
+            draggedIndex = index;
+            setTimeout(() => col.classList.add('dragging'), 0);
+        });
+        a.addEventListener('click', (e) => {
+            // Cancel click if a drag just happened
+            if (col.classList.contains('dragging')) e.preventDefault();
+        });
+        col.addEventListener('dragend', () => {
+            col.classList.remove('dragging');
+            document.querySelectorAll('.shortcut-tile').forEach(t => t.classList.remove('drag-over'));
+        });
+        col.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.shortcut-tile').forEach(t => t.classList.remove('drag-over'));
+            col.classList.add('drag-over');
+        });
+        col.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const targetIndex = index;
+            if (draggedIndex === null || draggedIndex === targetIndex) return;
+            chrome.storage.sync.get('shortcuts', (result) => {
+                const shortcuts = result.shortcuts || [];
+                const [moved] = shortcuts.splice(draggedIndex, 1);
+                shortcuts.splice(targetIndex, 0, moved);
+                draggedIndex = null;
+                chrome.storage.sync.set({ shortcuts }, () => constructShortcuts(shortcuts));
+            });
+        });
+
         fragment.appendChild(col);
     });
 
@@ -132,6 +195,14 @@ function removeShortcut(index) {
     });
 }
 
+function resetModal() {
+    editingIndex = null;
+    document.getElementById('modalAddShortcutLabel').textContent = 'Add Shortcut';
+    document.getElementById('btnAddShortcut').textContent = 'Add Shortcut';
+    document.getElementById('modalSiteName').value = '';
+    document.getElementById('modalURL').value = '';
+}
+
 function constructDate() {
     const container = document.getElementById('title');
     container.textContent = new Date().toLocaleDateString('en-my', {
@@ -139,18 +210,24 @@ function constructDate() {
     });
 }
 
+document.getElementById('modalAddShortcut').addEventListener('hidden.bs.modal', resetModal);
+
 document.getElementById('btnAddShortcut').addEventListener('click', () => {
     const name = document.getElementById('modalSiteName').value.trim();
-    const url = document.getElementById('modalURL').value.trim();
+    let url = document.getElementById('modalURL').value.trim();
     if (!name || !url) return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
 
     chrome.storage.sync.get('shortcuts', (result) => {
         const shortcuts = result.shortcuts || [];
-        shortcuts.push({ name, url });
+        if (editingIndex !== null) {
+            shortcuts[editingIndex] = { name, url };
+        } else {
+            shortcuts.push({ name, url });
+        }
         chrome.storage.sync.set({ shortcuts }, () => {
             constructShortcuts(shortcuts);
-            document.getElementById('modalSiteName').value = '';
-            document.getElementById('modalURL').value = '';
+            resetModal();
             bootstrap.Modal.getInstance(document.getElementById('modalAddShortcut')).hide();
         });
     });
