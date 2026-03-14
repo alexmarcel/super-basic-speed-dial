@@ -315,6 +315,13 @@ document.getElementById('modalBackup').addEventListener('hidden.bs.modal', () =>
 
 document.getElementById('modalAddShortcut').addEventListener('hidden.bs.modal', resetModal);
 
+document.querySelector('#modalAddShortcut form').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btnAddShortcut').click();
+    }
+});
+
 document.getElementById('btnAddShortcut').addEventListener('click', () => {
     const name = document.getElementById('modalSiteName').value.trim();
     let url = document.getElementById('modalURL').value.trim();
