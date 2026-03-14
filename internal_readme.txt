@@ -1,7 +1,7 @@
 SUPER BASIC SPEED DIAL
 ======================
 Chrome Extension — Manifest v3
-Personal new tab speed dial with add, edit, delete, and drag-to-reorder shortcuts.
+Personal new tab speed dial with add, edit, delete, drag-to-reorder, and backup/restore shortcuts.
 
 
 FEATURES
@@ -10,6 +10,8 @@ FEATURES
 - Add site shortcuts with auto-fetched favicons
 - Edit or delete shortcuts at any time
 - Drag and drop to reorder tiles
+- Backup shortcuts to a local JSON file
+- Restore shortcuts from a backup file
 - Shortcuts synced across Chrome devices via chrome.storage.sync
 - Toolbar popup for quick access
 - No CDN dependencies — all assets bundled locally
@@ -32,18 +34,28 @@ Add a shortcut:
   - Click "Add Shortcut"
 
 Edit a shortcut:
-  - Hover over a tile to reveal the blue pencil (✎) button (bottom-right)
+  - Hover over a tile to reveal the blue (E) button (bottom-right)
   - Click it to open the modal pre-filled with the current name and URL
   - Make changes and click "Save"
 
 Delete a shortcut:
-  - Hover over a tile to reveal the red (✕) button (top-right)
-  - Click once — it turns orange and shows "?" as a confirmation prompt
+  - Hover over a tile to reveal the red (X) button (top-right)
+  - Click once — it turns orange as a confirmation prompt
   - Click again within 2 seconds to confirm deletion
 
 Reorder shortcuts:
   - Drag any tile and drop it onto another tile to swap positions
   - New order is saved automatically
+
+Backup shortcuts:
+  - Hover over the "+ Add Shortcut" tile to reveal the green (B) button
+  - Click it to open the Backup & Restore modal
+  - Click "Download Backup" to save a JSON file of all current shortcuts
+
+Restore shortcuts:
+  - Open the Backup & Restore modal (B button on the Add Shortcut tile)
+  - Click "Restore Backup File" and select a previously saved JSON backup
+  - Click "Restore" to confirm — this replaces all current shortcuts
 
 
 FILE STRUCTURE
@@ -80,3 +92,4 @@ NOTES
 - chrome.storage.sync has a quota of ~100KB and ~512 items — sufficient for normal use
 - The extension makes no external requests except to Google's favicon service for images
 - No analytics, no tracking, no remote code execution
+- Backup files are plain JSON saved locally to the user's machine — nothing is uploaded anywhere
