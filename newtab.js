@@ -4,6 +4,13 @@ let editingIndex = null;
 constructDate();
 loadShortcuts();
 
+function updateOnlineStatus() {
+    document.getElementById('offlineNotice').classList.toggle('d-none', navigator.onLine);
+}
+updateOnlineStatus();
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
 function loadShortcuts() {
     chrome.storage.sync.get('shortcuts', (result) => {
         const shortcuts = result.shortcuts || [];
@@ -27,6 +34,12 @@ function constructWelcome() {
     `;
     container.appendChild(welcome);
     constructAddButton(container);
+}
+
+function nameToColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return `hsl(${Math.abs(hash) % 360}, 50%, 45%)`;
 }
 
 function constructShortcuts(data) {
@@ -58,6 +71,14 @@ function constructShortcuts(data) {
         img.height = 32;
         img.src = `https://www.google.com/s2/favicons?sz=64&domain=${obj.url}`;
         img.alt = obj.name;
+        img.onerror = () => {
+            img.style.display = 'none';
+            const letter = document.createElement('span');
+            letter.className = 'tile-letter';
+            letter.textContent = obj.name.charAt(0).toUpperCase();
+            letter.style.background = nameToColor(obj.name);
+            tile.appendChild(letter);
+        };
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
