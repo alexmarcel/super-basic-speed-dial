@@ -62,9 +62,3 @@ super-basic-speed-dial/
 - Bootstrap 5
 - Chrome Extension Manifest v3
 - `chrome.storage.sync` for persistent, cross-device storage
-
----
-
-## License
-
-MIT
