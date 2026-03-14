@@ -1,0 +1,30 @@
+Super Basic Speed Dial is a Chrome extension (Manifest v3) that replaces the browser's new tab page with a personal, dark-themed speed dial dashboard.
+
+Shortcuts are stored and synced across devices via chrome.storage.sync. On first load, the page shows a welcome state prompting the user to add their first shortcut. Each shortcut is rendered as a circular favicon tile (fetched from Google's favicon service) with the site name below it.
+
+Users can:
+- Add shortcuts via a modal form (name + URL, auto-prefixes https://)
+- Edit existing shortcuts (pre-filled modal, overwrites in place)
+- Delete shortcuts (two-click confirmation: first click turns button orange, second click confirms)
+- Reorder shortcuts via drag and drop (HTML5 Drag and Drop API, saves new order to storage)
+
+A toolbar popup (popup.html / popup.js) also reads from chrome.storage.sync and displays the same shortcuts as compact favicon tiles with Bootstrap tooltips.
+
+Tech stack:
+- Vanilla JS (no frameworks)
+- Bootstrap 5.1.3 (bundled locally under third-party/)
+- Chrome Extension Manifest v3
+- chrome.storage.sync for persistent, cross-device storage
+- Google Favicon Service (https://www.google.com/s2/favicons) for favicon images
+
+File structure:
+- manifest.json         Extension config
+- newtab.html           New tab page markup
+- newtab.js             New tab page logic (shortcuts, drag/drop, add/edit/delete, modal)
+- style-newtab.css      New tab page styles (tiles, hover, drag states, modal)
+- popup.html            Toolbar popup markup
+- popup.js              Toolbar popup logic
+- style-popup.css       Toolbar popup styles
+- background.js         Service worker (minimal, logs on install)
+- images/               Extension icons (16, 24, 32, 48, 128px)
+- third-party/          Bootstrap 5.1.3 CSS and JS (bundled, no CDN)
