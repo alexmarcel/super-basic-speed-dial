@@ -177,7 +177,15 @@ function constructAddButton(container) {
     iconWrap.appendChild(tile);
     a.appendChild(iconWrap);
     a.appendChild(label);
+    const backupBtn = document.createElement('button');
+    backupBtn.className = 'backup-btn';
+    backupBtn.textContent = 'B';
+    backupBtn.title = 'Backup & Restore';
+    backupBtn.setAttribute('data-bs-toggle', 'modal');
+    backupBtn.setAttribute('data-bs-target', '#modalBackup');
+
     col.appendChild(a);
+    col.appendChild(backupBtn);
     container.appendChild(col);
 }
 
@@ -209,6 +217,59 @@ function constructDate() {
         day: 'numeric', weekday: 'long', year: 'numeric', month: 'long'
     });
 }
+
+// ── Backup ──
+document.getElementById('btnBackup').addEventListener('click', () => {
+    chrome.storage.sync.get('shortcuts', (result) => {
+        const shortcuts = result.shortcuts || [];
+        const blob = new Blob([JSON.stringify(shortcuts, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'speed-dial-backup.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+});
+
+// ── Restore ──
+document.getElementById('restoreFileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('restoreFileName').textContent = file.name;
+    document.getElementById('restoreFileName').classList.remove('d-none');
+    document.getElementById('restoreWarning').classList.remove('d-none');
+    document.getElementById('btnRestoreConfirm').classList.remove('d-none');
+});
+
+document.getElementById('btnRestoreConfirm').addEventListener('click', () => {
+    const file = document.getElementById('restoreFileInput').files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (!Array.isArray(data) || !data.every(s => s.name && s.url)) {
+                alert('Invalid backup file.');
+                return;
+            }
+            chrome.storage.sync.set({ shortcuts: data }, () => {
+                bootstrap.Modal.getInstance(document.getElementById('modalBackup')).hide();
+                loadShortcuts();
+            });
+        } catch {
+            alert('Could not read backup file. Make sure it is a valid JSON file.');
+        }
+    };
+    reader.readAsText(file);
+});
+
+document.getElementById('modalBackup').addEventListener('hidden.bs.modal', () => {
+    document.getElementById('restoreFileInput').value = '';
+    document.getElementById('restoreFileName').classList.add('d-none');
+    document.getElementById('restoreWarning').classList.add('d-none');
+    document.getElementById('btnRestoreConfirm').classList.add('d-none');
+});
 
 document.getElementById('modalAddShortcut').addEventListener('hidden.bs.modal', resetModal);
 

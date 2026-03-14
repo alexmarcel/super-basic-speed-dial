@@ -43,6 +43,35 @@
         </div>
 
 
+        <!-- Backup & Restore Modal -->
+        <div class="modal fade" id="modalBackup" tabindex="-1" aria-labelledby="modalBackupLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal-dark">
+                    <div class="modal-header modal-dark-header">
+                        <h6 class="modal-title text-white" id="modalBackupLabel">Backup & Restore</h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body modal-dark-body">
+                        <p class="text-secondary small mb-3">Save your shortcuts to a file or restore from a previous backup.</p>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-light btn-sm" id="btnBackup">Download Backup</button>
+                            <div class="backup-divider">or</div>
+                            <label class="btn btn-outline-secondary btn-sm mb-0" id="btnRestoreLabel">
+                                Restore Backup File
+                                <input type="file" id="restoreFileInput" accept=".json" class="d-none">
+                            </label>
+                            <p id="restoreFileName" class="text-muted small text-center mb-0 d-none"></p>
+                            <p class="text-warning small text-center mb-0 d-none" id="restoreWarning">This will replace all current shortcuts.</p>
+                            <button type="button" class="btn btn-warning btn-sm d-none" id="btnRestoreConfirm">Restore</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer modal-dark-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="third-party/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js"></script>
         <script src="newtab.js"></script>

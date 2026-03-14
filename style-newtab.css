@@ -91,6 +91,39 @@
     background-color: #0d6efd;
 }
 
+.backup-btn {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 4px;
+    background: #27ae60;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.shortcut-tile:hover .backup-btn {
+    display: block;
+}
+
+/* ── Backup Modal ── */
+.backup-divider {
+    text-align: center;
+    color: #555;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 2px 0;
+}
+
 /* ── Modal ── */
 .modal-dark {
     background-color: #1e1e1e;
