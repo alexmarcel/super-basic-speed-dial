@@ -23,8 +23,7 @@ chrome.storage.sync.get('shortcuts', (result) => {
 
         const a = document.createElement('a');
         a.href = obj.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
+        a.target = '_self';
         a.className = 'text-decoration-none';
 
         const tile = document.createElement('div');
