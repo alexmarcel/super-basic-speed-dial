@@ -1,7 +1,7 @@
 SUPER BASIC SPEED DIAL
 ======================
 Chrome Extension — Manifest v3
-Personal new tab speed dial with add, edit, delete, drag-to-reorder, and backup/restore shortcuts.
+Personal new tab speed dial with add, edit, delete, drag-to-reorder, backup/restore, and letter icon shortcuts.
 
 
 FEATURES
@@ -10,6 +10,9 @@ FEATURES
 - Add site shortcuts with auto-fetched favicons
 - Edit or delete shortcuts at any time
 - Drag and drop to reorder tiles
+- Optional letter icon per shortcut (toggle switch in Add/Edit modal)
+- Automatic letter fallback if favicon fails to load
+- Offline notice shown below the date when there is no internet connection
 - Backup shortcuts to a local JSON file
 - Restore shortcuts from a backup file
 - Shortcuts synced across Chrome devices via chrome.storage.sync
@@ -31,11 +34,12 @@ HOW TO USE
 Add a shortcut:
   - Click the "+ Add Shortcut" tile on the new tab page
   - Enter a site name and URL (https:// is added automatically if omitted)
+  - Optionally enable "Use letter icon" toggle to show a colored letter instead of favicon
   - Click "Add Shortcut"
 
 Edit a shortcut:
   - Hover over a tile to reveal the blue (E) button (bottom-right)
-  - Click it to open the modal pre-filled with the current name and URL
+  - Click it to open the modal pre-filled with the current name, URL, and icon setting
   - Make changes and click "Save"
 
 Delete a shortcut:
@@ -46,6 +50,12 @@ Delete a shortcut:
 Reorder shortcuts:
   - Drag any tile and drop it onto another tile to swap positions
   - New order is saved automatically
+
+Letter icon:
+  - Each shortcut has a toggle switch in its Add/Edit modal: "Use letter icon"
+  - When enabled, the tile always shows a colored circle with the first letter of the site name
+  - Color is generated from the site name — consistent across reloads
+  - If favicon fails to load for any reason, letter icon is shown automatically as a fallback
 
 Backup shortcuts:
   - Hover over the "+ Add Shortcut" tile to reveal the green (B) button
@@ -88,8 +98,10 @@ TECH STACK
 
 NOTES
 -----
-- Shortcuts are stored as an array of { name, url } objects in chrome.storage.sync
+- Shortcuts are stored as an array of { name, url, useLetter } objects in chrome.storage.sync
+- useLetter is optional — existing shortcuts without it default to favicon behavior
 - chrome.storage.sync has a quota of ~100KB and ~512 items — sufficient for normal use
 - The extension makes no external requests except to Google's favicon service for images
 - No analytics, no tracking, no remote code execution
 - Backup files are plain JSON saved locally to the user's machine — nothing is uploaded anywhere
+- Offline detection uses the browser's navigator.onLine and window online/offline events

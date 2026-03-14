@@ -1,3 +1,9 @@
+function nameToColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return `hsl(${Math.abs(hash) % 360}, 50%, 45%)`;
+}
+
 chrome.storage.sync.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts || [];
     const container = document.getElementById('shortcuts');
@@ -27,14 +33,29 @@ chrome.storage.sync.get('shortcuts', (result) => {
         tile.setAttribute('data-bs-placement', 'bottom');
         tile.title = obj.name;
 
-        const img = document.createElement('img');
-        img.className = 'tile-icon-rounded';
-        img.width = 32;
-        img.height = 32;
-        img.src = `https://www.google.com/s2/favicons?sz=64&domain=${obj.url}`;
-        img.alt = obj.name;
-
-        tile.appendChild(img);
+        if (obj.useLetter) {
+            const letter = document.createElement('span');
+            letter.className = 'tile-letter';
+            letter.textContent = obj.name.charAt(0).toUpperCase();
+            letter.style.background = nameToColor(obj.name);
+            tile.appendChild(letter);
+        } else {
+            const img = document.createElement('img');
+            img.className = 'tile-icon-rounded';
+            img.width = 32;
+            img.height = 32;
+            img.src = `https://www.google.com/s2/favicons?sz=64&domain=${obj.url}`;
+            img.alt = obj.name;
+            img.onerror = () => {
+                img.style.display = 'none';
+                const letter = document.createElement('span');
+                letter.className = 'tile-letter';
+                letter.textContent = obj.name.charAt(0).toUpperCase();
+                letter.style.background = nameToColor(obj.name);
+                tile.appendChild(letter);
+            };
+            tile.appendChild(img);
+        }
         a.appendChild(tile);
         col.appendChild(a);
         fragment.appendChild(col);

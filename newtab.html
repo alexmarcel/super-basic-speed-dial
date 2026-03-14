@@ -10,7 +10,7 @@
             <div  class="row mt-5 justify-content-center">
                 <div class="col">
                 <h1 class="display-4 text-center" id="title">Super Basic Speed Dial</h1>
-                <p id="offlineNotice" class="text-center text-danger small mt-1 d-none">no internet connection</p>
+                <p id="offlineNotice" class="small mt-2 d-none offline-notice"><span>no internet connection</span></p>
             </div>
             </div>
             <div id="shortcuts" class="row mt-5 justify-content-center">
@@ -34,6 +34,10 @@
                             <div class="mb-1">
                                 <label for="modalURL" class="form-label modal-label">URL</label>
                                 <input type="text" class="form-control modal-input" id="modalURL" placeholder="https://...">
+                            </div>
+                            <div class="form-check form-switch mt-3">
+                                <input class="form-check-input" type="checkbox" role="switch" id="modalUseLetter">
+                                <label class="form-check-label modal-label m-0" for="modalUseLetter" style="cursor:pointer">Use letter icon</label>
                             </div>
                         </form>
                     </div>

@@ -9,6 +9,9 @@ Users can:
 - Reorder shortcuts via drag and drop (HTML5 Drag and Drop API, saves new order to storage)
 - Backup shortcuts (B button on hover on the Add Shortcut tile, downloads a JSON file)
 - Restore shortcuts from a backup JSON file (same Backup & Restore modal, replaces all current shortcuts)
+- Toggle letter icon per shortcut: a switch in the Add/Edit modal forces a colored letter circle instead of fetching a favicon
+- Favicon fallback: if a favicon fails to load (network error, blocked), a colored letter circle is shown automatically
+- Offline notice: a subtle "no internet connection" message appears below the date when offline, disappears when connectivity is restored
 
 A toolbar popup (popup.html / popup.js) also reads from chrome.storage.sync and displays the same shortcuts as compact favicon tiles with Bootstrap tooltips.
 
@@ -22,8 +25,8 @@ Tech stack:
 File structure:
 - manifest.json         Extension config
 - newtab.html           New tab page markup
-- newtab.js             New tab page logic (shortcuts, drag/drop, add/edit/delete/backup/restore, modals)
-- style-newtab.css      New tab page styles (tiles, hover, drag states, modals)
+- newtab.js             New tab page logic (shortcuts, drag/drop, add/edit/delete/backup/restore, modals, online status)
+- style-newtab.css      New tab page styles (tiles, hover, drag states, letter icon, modals)
 - popup.html            Toolbar popup markup
 - popup.js              Toolbar popup logic
 - style-popup.css       Toolbar popup styles

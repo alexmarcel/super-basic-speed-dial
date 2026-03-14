@@ -94,6 +94,22 @@
     display: block;
 }
 
+/* ── Offline Notice ── */
+.offline-notice {
+    display: flex;
+    justify-content: center;
+    color: #e74c3c;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+}
+
+.offline-notice span {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    border-radius: 20px;
+    padding: 3px 14px;
+}
+
 /* ── Drag and Drop ── */
 .shortcut-tile.dragging {
     opacity: 0.4;

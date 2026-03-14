@@ -4,12 +4,23 @@ let editingIndex = null;
 constructDate();
 loadShortcuts();
 
-function updateOnlineStatus() {
-    document.getElementById('offlineNotice').classList.toggle('d-none', navigator.onLine);
+function setOfflineNotice(isOffline) {
+    document.getElementById('offlineNotice').classList.toggle('d-none', !isOffline);
 }
-updateOnlineStatus();
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
+
+async function checkConnectivity() {
+    if (!navigator.onLine) { setOfflineNotice(true); return; }
+    try {
+        await fetch('https://www.google.com/s2/favicons?domain=google.com', { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+        setOfflineNotice(false);
+    } catch {
+        setOfflineNotice(true);
+    }
+}
+
+checkConnectivity();
+window.addEventListener('online', checkConnectivity);
+window.addEventListener('offline', () => setOfflineNotice(true));
 
 function loadShortcuts() {
     chrome.storage.sync.get('shortcuts', (result) => {
@@ -65,20 +76,29 @@ function constructShortcuts(data) {
         const tile = document.createElement('div');
         tile.className = 'tile-icon p-2';
 
-        const img = document.createElement('img');
-        img.className = 'tile-icon-rounded';
-        img.width = 32;
-        img.height = 32;
-        img.src = `https://www.google.com/s2/favicons?sz=64&domain=${obj.url}`;
-        img.alt = obj.name;
-        img.onerror = () => {
-            img.style.display = 'none';
+        if (obj.useLetter) {
             const letter = document.createElement('span');
             letter.className = 'tile-letter';
             letter.textContent = obj.name.charAt(0).toUpperCase();
             letter.style.background = nameToColor(obj.name);
             tile.appendChild(letter);
-        };
+        } else {
+            const img = document.createElement('img');
+            img.className = 'tile-icon-rounded';
+            img.width = 32;
+            img.height = 32;
+            img.src = `https://www.google.com/s2/favicons?sz=64&domain=${obj.url}`;
+            img.alt = obj.name;
+            img.onerror = () => {
+                img.style.display = 'none';
+                const letter = document.createElement('span');
+                letter.className = 'tile-letter';
+                letter.textContent = obj.name.charAt(0).toUpperCase();
+                letter.style.background = nameToColor(obj.name);
+                tile.appendChild(letter);
+            };
+            tile.appendChild(img);
+        }
 
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
@@ -103,7 +123,6 @@ function constructShortcuts(data) {
         label.className = 'mt-2 text-white small text-center tile-label';
         label.textContent = obj.name;
 
-        tile.appendChild(img);
         iconWrap.appendChild(tile);
         a.appendChild(iconWrap);
         a.appendChild(label);
@@ -119,6 +138,7 @@ function constructShortcuts(data) {
             document.getElementById('btnAddShortcut').textContent = 'Save';
             document.getElementById('modalSiteName').value = obj.name;
             document.getElementById('modalURL').value = obj.url;
+            document.getElementById('modalUseLetter').checked = !!obj.useLetter;
             new bootstrap.Modal(document.getElementById('modalAddShortcut')).show();
         });
 
@@ -230,6 +250,7 @@ function resetModal() {
     document.getElementById('btnAddShortcut').textContent = 'Add Shortcut';
     document.getElementById('modalSiteName').value = '';
     document.getElementById('modalURL').value = '';
+    document.getElementById('modalUseLetter').checked = false;
 }
 
 function constructDate() {
@@ -299,13 +320,14 @@ document.getElementById('btnAddShortcut').addEventListener('click', () => {
     let url = document.getElementById('modalURL').value.trim();
     if (!name || !url) return;
     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    const useLetter = document.getElementById('modalUseLetter').checked;
 
     chrome.storage.sync.get('shortcuts', (result) => {
         const shortcuts = result.shortcuts || [];
         if (editingIndex !== null) {
-            shortcuts[editingIndex] = { name, url };
+            shortcuts[editingIndex] = { name, url, useLetter };
         } else {
-            shortcuts.push({ name, url });
+            shortcuts.push({ name, url, useLetter });
         }
         chrome.storage.sync.set({ shortcuts }, () => {
             constructShortcuts(shortcuts);
