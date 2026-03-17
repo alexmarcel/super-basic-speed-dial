@@ -1,9 +1,9 @@
-Super Basic Speed Dial is a Chrome extension (Manifest v3) that replaces the browser's new tab page with a personal, dark-themed speed dial dashboard.
+Super Basic Speed Dial is a Chrome extension (Manifest v3) that replaces the browser's new tab page with a personal speed dial dashboard supporting light and dark mode.
 
 Shortcuts are stored and synced across devices via chrome.storage.sync. On first load, the page shows a welcome state prompting the user to add their first shortcut. Each shortcut is rendered as a circular favicon tile (fetched from Google's favicon service) with the site name below it.
 
 Users can:
-- Add shortcuts via a modal form (name + URL, auto-prefixes https://)
+- Add shortcuts via a modal form (name + URL, auto-prefixes https://; press Enter or click to save)
 - Edit existing shortcuts (E button on hover, pre-filled modal, overwrites in place)
 - Delete shortcuts (X button on hover, two-click confirmation: turns orange then confirms)
 - Reorder shortcuts via drag and drop (HTML5 Drag and Drop API, saves new order to storage)
@@ -12,24 +12,30 @@ Users can:
 - Toggle letter icon per shortcut: a switch in the Add/Edit modal forces a colored letter circle instead of fetching a favicon
 - Favicon fallback: if a favicon fails to load (network error, blocked), a colored letter circle is shown automatically
 - Offline notice: a subtle "no internet connection" message appears below the date when offline, disappears when connectivity is restored
+- Toggle light/dark mode: S button on hover on the Add Shortcut tile; preference saved to chrome.storage.sync and applied on both the new tab page and toolbar popup
 
-A toolbar popup (popup.html / popup.js) also reads from chrome.storage.sync and displays the same shortcuts as compact favicon tiles with Bootstrap tooltips.
+A toolbar popup (popup.html / popup.js) also reads from chrome.storage.sync and displays the same shortcuts as compact favicon tiles. Clicking a shortcut in the popup navigates the current tab to that URL (does not open a new tab). The popup also respects the saved light/dark theme preference.
 
 Tech stack:
 - Vanilla JS (no frameworks)
-- Bootstrap 5.1.3 (bundled locally under third-party/)
+- Bootstrap 5.3.8 (bundled locally under third-party/, uses data-bs-theme for native light/dark theming)
 - Chrome Extension Manifest v3
 - chrome.storage.sync for persistent, cross-device storage
 - Google Favicon Service (https://www.google.com/s2/favicons) for favicon images
 
+Permissions:
+- storage  — save and sync shortcuts and theme preference
+- tabs     — navigate the current tab when a shortcut is clicked from the popup
+
 File structure:
 - manifest.json         Extension config
 - newtab.html           New tab page markup
-- newtab.js             New tab page logic (shortcuts, drag/drop, add/edit/delete/backup/restore, modals, online status)
-- style-newtab.css      New tab page styles (tiles, hover, drag states, letter icon, modals)
+- newtab.js             New tab page logic (shortcuts, drag/drop, add/edit/delete/backup/restore, modals, online status, theme)
+- style-newtab.css      New tab page styles (tiles, hover, drag states, letter icon, modals, theme-aware via CSS variables)
 - popup.html            Toolbar popup markup
 - popup.js              Toolbar popup logic
-- style-popup.css       Toolbar popup styles
+- style-popup.css       Toolbar popup styles (theme-aware via CSS variables)
 - background.js         Service worker (minimal, logs on install)
 - images/               Extension icons (16, 24, 32, 48, 128px)
-- third-party/          Bootstrap 5.1.3 CSS and JS (bundled, no CDN)
+- third-party/          Bootstrap 5.3.8 CSS and JS (bundled, no CDN)
+- misc/                 Internal project notes and documentation
