@@ -1,6 +1,6 @@
 .tile-icon {
     align-items: center;
-    background-color: #454545;
+    background-color: var(--bs-secondary-bg);
     border-radius: 50%;
     display: flex;
     flex-shrink: 0;
@@ -32,15 +32,16 @@
 
 .shortcut-tile a:hover .tile-icon {
     transform: scale(1.12);
-    background-color: #606060;
+    background-color: var(--bs-tertiary-bg);
 }
 
 .tile-label {
     transition: color 0.15s ease;
+    color: var(--bs-secondary-color);
 }
 
 .shortcut-tile a:hover .tile-label {
-    color: #fff !important;
+    color: var(--bs-body-color) !important;
 }
 
 .delete-btn {
@@ -143,10 +144,33 @@
     display: block;
 }
 
+.theme-btn {
+    display: none;
+    position: absolute;
+    top: 32px;
+    right: 4px;
+    background: #8e44ad;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.shortcut-tile:hover .theme-btn {
+    display: block;
+}
+
 /* ── Backup Modal ── */
 .backup-divider {
     text-align: center;
-    color: #555;
+    color: var(--bs-secondary-color);
     font-size: 0.75rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -154,32 +178,8 @@
 }
 
 /* ── Modal ── */
-.modal-dark {
-    background-color: #1e1e1e;
-    border: 1px solid #333;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.modal-dark-header {
-    background-color: #1e1e1e;
-    border-bottom: 1px solid #333;
-    padding: 16px 20px;
-}
-
-.modal-dark-body {
-    background-color: #1e1e1e;
-    padding: 20px;
-}
-
-.modal-dark-footer {
-    background-color: #1e1e1e;
-    border-top: 1px solid #333;
-    padding: 12px 20px;
-}
-
 .modal-label {
-    color: #aaa;
+    color: var(--bs-secondary-color);
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -187,22 +187,22 @@
 }
 
 .modal-input {
-    background-color: #2a2a2a;
-    border: 1px solid #444;
+    background-color: var(--bs-tertiary-bg);
+    border: 1px solid var(--bs-border-color);
     border-radius: 8px;
-    color: #fff;
+    color: var(--bs-body-color);
     padding: 10px 14px;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .modal-input::placeholder {
-    color: #555;
+    color: var(--bs-secondary-color);
 }
 
 .modal-input:focus {
-    background-color: #2a2a2a;
+    background-color: var(--bs-tertiary-bg);
     border-color: #0d6efd;
     box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
-    color: #fff;
+    color: var(--bs-body-color);
     outline: none;
 }

@@ -1,6 +1,21 @@
 let draggedIndex = null;
 let editingIndex = null;
 
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-bs-theme', theme);
+}
+
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-bs-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    chrome.storage.sync.set({ theme: next });
+}
+
+chrome.storage.sync.get('theme', (result) => {
+    applyTheme(result.theme || 'dark');
+});
+
 constructDate();
 loadShortcuts();
 
@@ -41,7 +56,7 @@ function constructWelcome() {
     welcome.className = 'col-12 text-center mt-5';
     welcome.innerHTML = `
         <p class="text-secondary fs-5">You have no shortcuts yet.</p>
-        <p class="text-muted">Click <strong class="text-white">+ Add Shortcut</strong> below to get started.</p>
+        <p class="text-muted">Click <strong>+ Add Shortcut</strong> below to get started.</p>
     `;
     container.appendChild(welcome);
     constructAddButton(container);
@@ -119,7 +134,7 @@ function constructShortcuts(data) {
         });
 
         const label = document.createElement('div');
-        label.className = 'mt-2 text-white small text-center tile-label';
+        label.className = 'mt-2 small text-center tile-label';
         label.textContent = obj.name;
 
         iconWrap.appendChild(tile);
@@ -224,8 +239,19 @@ function constructAddButton(container) {
     backupBtn.setAttribute('data-bs-toggle', 'modal');
     backupBtn.setAttribute('data-bs-target', '#modalBackup');
 
+    const themeBtn = document.createElement('button');
+    themeBtn.className = 'theme-btn';
+    themeBtn.textContent = 'S';
+    themeBtn.title = 'Toggle light/dark mode';
+    themeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleTheme();
+    });
+
     col.appendChild(a);
     col.appendChild(backupBtn);
+    col.appendChild(themeBtn);
     container.appendChild(col);
 }
 

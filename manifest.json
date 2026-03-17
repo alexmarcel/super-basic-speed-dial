@@ -23,7 +23,7 @@
         "48" : "images/icons8-home-office-48.png",
         "128" : "images/icons8-home-office-128.png"
     },
-    "permissions" : ["storage"],
+    "permissions" : ["storage", "tabs"],
     "chrome_url_overrides" : {
         "newtab" : "newtab.html"
     }

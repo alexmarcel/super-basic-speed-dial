@@ -4,21 +4,25 @@
 
 .tile-icon {
     align-items: center;
-    background-color: #454545;
+    background-color: var(--bs-secondary-bg);
     border-radius: 50%;
     display: flex;
     flex-shrink: 0;
     justify-content: center;
-    margin-top: 8px;
+    width: 32px;
+    height: 32px;
+    margin: 6px auto 0;
     transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 .tile-icon:hover {
     transform: scale(1.12);
-    background-color: #606060;
+    background-color: var(--bs-tertiary-bg);
 }
 
-.tile-icon-rounded {
+.tile-icon img {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
 }
 
@@ -26,26 +30,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     color: #fff;
-    font-size: 16px;
+    font-size: 11px;
     font-weight: 600;
     user-select: none;
 }
 
 /* ── Scrollbar ── */
 body::-webkit-scrollbar-track {
-    background-color: #2a2a2a;
+    background-color: var(--bs-tertiary-bg);
 }
 
 body::-webkit-scrollbar {
     width: 6px;
-    background-color: #2a2a2a;
+    background-color: var(--bs-tertiary-bg);
 }
 
 body::-webkit-scrollbar-thumb {
     border-radius: 3px;
-    background-color: #555;
+    background-color: var(--bs-secondary-color);
 }

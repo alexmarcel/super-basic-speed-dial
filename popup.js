@@ -1,3 +1,7 @@
+chrome.storage.sync.get('theme', (result) => {
+    document.documentElement.setAttribute('data-bs-theme', result.theme || 'dark');
+});
+
 function nameToColor(name) {
     let hash = 0;
     for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -19,12 +23,16 @@ chrome.storage.sync.get('shortcuts', (result) => {
     const fragment = document.createDocumentFragment();
     shortcuts.forEach((obj) => {
         const col = document.createElement('div');
-        col.className = 'col-2 justify-content-center text-nowrap mt-3';
+        col.className = 'col-2 d-flex justify-content-center';
 
         const a = document.createElement('a');
         a.href = obj.url;
-        a.target = '_self';
         a.className = 'text-decoration-none';
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            chrome.tabs.update({ url: obj.url });
+            window.close();
+        });
 
         const tile = document.createElement('div');
         tile.className = 'tile-icon p-1';
@@ -40,9 +48,6 @@ chrome.storage.sync.get('shortcuts', (result) => {
             tile.appendChild(letter);
         } else {
             const img = document.createElement('img');
-            img.className = 'tile-icon-rounded';
-            img.width = 32;
-            img.height = 32;
             img.src = `https://www.google.com/s2/favicons?sz=64&domain=${obj.url}`;
             img.alt = obj.name;
             img.onerror = () => {
