@@ -102,6 +102,7 @@
     color: #e74c3c;
     font-size: 0.75rem;
     letter-spacing: 0.03em;
+    padding: 10px;
 }
 
 .offline-notice span {
